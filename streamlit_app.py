@@ -25,11 +25,20 @@ try:
       my_cur.execute("SELECT * from fruit_load_list")
       return my_cur.fetchall()
   
+  def add_fruit_to_list(new_fruit):
+    with my_cnx.cursor() as my_cur:
+      my_cur.execute("insert into fruit_load_list values ('"+new_fruit+"')")
+      return "Thanks for adding a new fruit:"+new_fruit
+  
   if streamlit.button('Get Fruit Load List'):
     my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
     my_data_rows = get_fruit_load_list()
     streamlit.dataframe(my_data_rows)
-    
+  
+  if streamlit.button('Add a Fruit to a List'):
+    my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+    back_from_function = add_fruit_to_list("coco")
+    streamlit.text(back_from_function)
     
     
   # function to get desired fruit from snowflake db-table
