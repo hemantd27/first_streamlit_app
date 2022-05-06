@@ -26,7 +26,7 @@ try:
   my_cur = my_cnx.cursor()
   my_cur.execute("SELECT * from fruit_load_list")
   my_data_row = my_cur.fetchone()
-  #streamlit.text("The fruit load list containts:")
+  streamlit.text("The fruit load list containts:")
   streamlit.text(my_data_row)
 except:
   streamlit.text("exception found")
