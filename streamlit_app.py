@@ -16,19 +16,38 @@ try:
   fruits_selected = streamlit.multiselect("Pick some fruits:",list(my_fruit_list.index),['Avocado','Strawberries'])
   my_fruit_show = my_fruit_list.loc[fruits_selected]
   streamlit.dataframe(my_fruit_show)
-  def get_fruityvice_data(this_fruit_choice):
-    fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+this_fruit_choice)
-    fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
-    return fruityvice_normalized
+  
+  streamlit.header("The fruit load list containts:")
+  
+  # function to get list of fruits from snowflake db-table
+  def get_fruit_load_list():
+    with my_cnx.cursor() as my_cur:
+      my_cur.execute("SELECT * from fruit_load_list")
+      return my_cur.fetchall()
+  
+  if streamlit.button('Get Fruit Load List'):
+    my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+    my_data_rows = get_fruit_load_list()
+    streamlit.dataframe(my_data_rows)
     
-  streamlit.header('fruityvice Fruit Advice!')
-  try:
-    fruit_choice = streamlit.text_input("what fruit would you like information about","kiwi")
-    if not fruit_choice:
-      streamlit.error("Please select a fruit to get an information")
-    else:       
-      fruityvice_normalized = get_fruityvice_data(fruit_choice)
-      streamlit.dataframe(fruityvice_normalized)
+    
+    
+  # function to get desired fruit from snowflake db-table
+  # def get_fruityvice_data(this_fruit_choice):
+   #  fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+this_fruit_choice)
+   #  fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+   #  return fruityvice_normalized
+    
+  
+  
+  
+   #try:
+    # fruit_choice = streamlit.text_input("what fruit would you like information about","kiwi")
+    # if not fruit_choice:
+    #   streamlit.error("Please select a fruit to get an information")
+     #else:       
+    #   fruityvice_normalized = get_fruityvice_data(fruit_choice)
+     #  streamlit.dataframe(fruityvice_normalized)
       #my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
       #my_cur = my_cnx.cursor()
       #my_cur.execute("SELECT * from fruit_load_list")
@@ -39,8 +58,8 @@ try:
       #streamlit.write('The user entered',fruit_choice)
       #my_cur.execute("insert into fruit_load_list values ('from streamlit')")
       
-  except URLError as e:
-    streamlit.error()    
+   #except URLError as e:
+     #streamlit.error()    
 except:
   streamlit.text("exception found")
   
