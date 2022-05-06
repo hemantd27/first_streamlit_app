@@ -30,6 +30,7 @@ try:
   streamlit.dataframe(my_data_rows)
   fruit_choice = streamlit.text_input("what fruit do you like to add?","kiwi")
   streamlit.write('The user entered',fruit_choice)
+  #my_cur.execute("insert into fruit_load_list values ('from streamlit')")
 except:
   streamlit.text("exception found")
   
