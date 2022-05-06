@@ -28,6 +28,8 @@ try:
   my_data_rows = my_cur.fetchall()
   streamlit.header("The fruit load list containts:")
   streamlit.dataframe(my_data_rows)
+  fruit_choice = streamlit.text_input("what fruit do you like to add?","kiwi")
+  streamlit.write('The user entered',fruit_choice)
 except:
   streamlit.text("exception found")
   
