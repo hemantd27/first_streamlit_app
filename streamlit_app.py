@@ -29,5 +29,5 @@ try:
   #streamlit.text("The fruit load list containts:")
   streamlit.text(my_data_row)
 except:
-  streamlit.text"exception found")
+  streamlit.text("exception found")
   
